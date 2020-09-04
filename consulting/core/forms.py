@@ -27,6 +27,6 @@ class LoginForm(forms.Form):
         password = self.cleaned_data["passwd"]
         user = User.objects.filter(username=username).first()
         if user and not user.check_password(password):
-            raise Validation("Contraseña incorrecta")
+            raise ValidationError("Contraseña incorrecta")
         return password
         

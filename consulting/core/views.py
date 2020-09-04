@@ -9,7 +9,9 @@ class IndexView(View):
       Only show optios to doctor.""" 
       
     def get(self, request, *args, **kwargs):
-        return render(request, "base.html", locals())
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
+        return render(request, "core/index.html", locals())
 
 class LoginView(View):
     
