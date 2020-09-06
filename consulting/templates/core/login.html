@@ -2,6 +2,9 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/core/login.css' %}">
+{% endblock %}
 
 {% block content %}
 {% if error %}
@@ -12,48 +15,22 @@
 </p>
 </div>
 {% endif %}
-<div class="container">
-  <div class="columns columns is-mobile is-centered is-vcentered">
-    <div class="column  is-half is-4">
-      <figure class="image">
-        <img src="{% static 'img/logos/logo.svg' %}" alt="logo">
-      </figure>
-    </div>
-  </div>
-</div>
-
-
-<div class="columns is-desktop is-centered is-vcentered" style="height: 50vh;">
-  <div class="column is-half is-3">
-    <form method="POST" class="">
-      {% csrf_token %}
-      <div class="box has-text-centered">                  
-        <div class="field">
-          <label class="label">Username</label>
-          <div class="control has-icons-left has-icons-right">
-            {{form.username}}
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-            </div>
-            </div>
-        
-        <div class="field">
-          <label class="label">Email</label>
-          <div class="control has-icons-left has-icons-right">
-            {{form.passwd}}
-            <span class="icon is-small is-left">
-              <i class="fas fa-unlock-alt"></i>
-            </span>
-          </div>
-        </div>
-        
-        
-        <input class="button button is-success my-4 is-size-5" type="submit" value="Enviar">
+<div class="container container_form ">
+  <div class="row align-items-center h-100">
+<div class="col-sm-4 my-auto mx-auto">
+  <div class="form_login p-5 text-center">
+      <img src="{% static 'img/logos/logo.svg' %}" alt="logo" class="img-fluid" width="200">
+  <div class="container">
+    <form method="post">{% csrf_token %}
+        {{ form|crispy  }}
+        <input class=" mt-5 btn btn-success btn-lg btn-block" type="submit" value="Entrar">
     </form>
   </div>
+    </div>
 </div>
-
+  
+</div>
+</div>
   </div>
 
 {% endblock %}

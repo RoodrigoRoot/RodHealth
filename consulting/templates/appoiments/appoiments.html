@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Cita Médica
+{% endblock %}
+{% block content %}
+<h2>Cita Médica</h2>
+
+<form method="POST">
+    {{form|crispy}}
+</form>
+{% endblock %}

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-from crispy_forms_bulma.settings import *
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'core',
     'crispy_forms',
-    'django_crispy_bulma',
+    'appoiments',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 
 USE_I18N = True
 
@@ -126,13 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
-RISPY_ALLOWED_TEMPLATE_PACKS = (
-    "bootstrap",
-    "uni_form",
-    "bootstrap3",
-    "bootstrap4",
-    "bulma",
-)
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

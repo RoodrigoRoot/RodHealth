@@ -6,13 +6,13 @@ class LoginForm(forms.Form):
     username = forms.CharField(label="Usuario", help_text="Ingresa tu nombre de usuario", required=True,widget=forms.TextInput(
         attrs={
             "placeholder":"Ingresa tu Usuario",
-            "class": "input is-size-5"
+            "class": "input is-size-6"
         }
     ))
     passwd = forms.CharField(label="Contraseña", required=True, widget=forms.PasswordInput(
         attrs={
             "placeholder":"Ingresa tu contraseña",
-            "class": "input is-size-5"
+            "class": "input is-size-6"
         }
     ))
     

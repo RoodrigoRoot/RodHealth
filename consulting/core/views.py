@@ -16,6 +16,8 @@ class IndexView(View):
 class LoginView(View):
     
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse("index"))
         form = LoginForm()
         return render(request, "core/login.html", locals())
     

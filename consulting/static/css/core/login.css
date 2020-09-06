@@ -1,3 +1,15 @@
-html{
+.container_form{
+    height: 650px;
+    
+}
+
+.image img{
+    display: block;
+    width: 100%;
+}
+
+.form_login{
+    height: auto;
     background-color: #f2f2f2;
+
 }
