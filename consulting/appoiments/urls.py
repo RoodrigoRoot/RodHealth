@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import AppoimentView
+from .views import AppoimentsCreateView
 
 urlpatterns = [
-    path("", AppoimentView.as_view(), name="appoiments")
+    path("", AppoimentsCreateView.as_view(), name="appoiments")
 ]

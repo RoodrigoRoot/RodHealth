@@ -5,6 +5,7 @@ from django.utils.text import slugify
 import uuid
 from datetime import timedelta 
 import datetime as dt
+from django.shortcuts import reverse
 
 # Create your models here.
 
@@ -37,6 +38,12 @@ class Doctor(UserGeneral):
     
     def __str__(self):
         return self.user.username
+    
+    def get_absolute_url(self):
+        return reverse("account", kwargs={"pk": self.pk})
+    
+    
+    
 
 def set_slug(sender, instance, *args, **kwargs):
     user = instance.user.first_name

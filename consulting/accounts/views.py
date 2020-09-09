@@ -34,7 +34,7 @@ class MyAccountView(View):
             if form.is_valid():
                 print("Valido")
         except Exception as e:
-            print("error",e)
+            print("error", e)
         return render(request, 'accounts/myaccount.html', locals())
 
 
@@ -50,8 +50,6 @@ class UpdateUser(UpdateView):
     template_name = "accounts/update.html"
     success_url = reverse_lazy('index')
 
-    def post(self, request, *args, **kwargs):
-        print(request.POST)
 
 def logout_view(request):
     logout(request)

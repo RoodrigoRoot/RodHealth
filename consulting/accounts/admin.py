@@ -4,12 +4,12 @@ from .models import *
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ("cedula", "user", "curp")
+    list_display = ("pk","cedula", "user", "curp")
     list_filter = ("user__username", "user__first_name", "curp")
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ("user", "curp", "tel_phone")
+    list_display = ("pk","user", "curp", "tel_phone")
     search_fields = ("user", "curp")
     
 
