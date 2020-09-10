@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views import View
 from django.views.generic.edit import UpdateView
 from .models import Doctor
@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .forms import DoctorForm, UserForm
 from django.contrib.auth import logout, authenticate, login
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 # Create your views here.
 
 class MyAccountView(View):
@@ -39,16 +40,25 @@ class MyAccountView(View):
 
 
 class UpdateUser(UpdateView):   
-
-    def get_context_data(self, **kwargs):
-       context = super().get_context_data(**kwargs)
-       context["second_form"] = UserForm()
-       return context
     
     model = Doctor
     form_class = DoctorForm
     template_name = "accounts/update.html"
     success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["second_form"] = UserForm
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()        
+        user = User.objects.get(username=request.POST.get("username"))
+        user.first_name =request.POST.get("first_name")
+        user.last_name =request.POST.get("last_name")
+        user.save()
+        return super().post(request, *args, **kwargs)
+
 
 
 def logout_view(request):
