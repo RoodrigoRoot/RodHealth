@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Pacientes
+{% endblock %}
+{% block content %}
+{% if alert %}
+<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    <strong>Paciente agregado</strong> El paciente fue agregado exitosamente.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
+<div class="container">
+    <form method="POST">{% csrf_token %}
+        {{second_form|crispy}}
+        {{form|crispy}}
+        <input type="submit" value="Agregar" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}

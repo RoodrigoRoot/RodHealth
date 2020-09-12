@@ -6,7 +6,7 @@ class UserForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "email")
+        fields = ("first_name", "last_name", "email")
 
 
 class DoctorForm(forms.ModelForm):   
@@ -15,5 +15,11 @@ class DoctorForm(forms.ModelForm):
         model = Doctor
         fields = ("curp", "cedula", "universidad", "date_birth", "tel_phone", "cel_phone", "sex", "age")
     
+
+class PatientForm(forms.ModelForm):
+    
+    class Meta:
+        model = Patient
+        fields = ("curp", "date_birth", "tel_phone", "cel_phone", "sex", "age")
 
     

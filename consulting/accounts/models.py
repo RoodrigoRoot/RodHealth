@@ -10,7 +10,7 @@ from django.shortcuts import reverse
 # Create your models here.
 
 class UserGeneral(models.Model):
-
+    """This model, extended from Model User, with attributes Generals to Doctor and Patient"""
     SEXOS = (("Femenino","Femenino"),
             ("Masculino","Masculino"))
 
@@ -32,7 +32,7 @@ class UserGeneral(models.Model):
 
   
 class Doctor(UserGeneral):
-    
+    """Class Doctor inherit from User general and add two attrbutes extras"""
     cedula = models.CharField(verbose_name=("Cédula"), max_length=30)
     universidad = models.CharField(verbose_name="Universidad", max_length=250)
     
@@ -44,8 +44,10 @@ class Doctor(UserGeneral):
     
     
     
-
 def set_slug(sender, instance, *args, **kwargs):
+    """This method is for create a slug before save the Doctor or Patient.
+    This methos work with signals
+    """
     user = instance.user.first_name
     last_name = instance.user.last_name
     uid = str(uuid.uuid4())[:4]
@@ -53,12 +55,15 @@ def set_slug(sender, instance, *args, **kwargs):
     instance.slug = slugify(slug)    
 
 def set_age(sender, instance, *args, **kwargs):
+    """This method is to calculate the age from user before save the Doctor or Patient.
+    This methos work with signals
+    """
     date = instance.date_birth.year
     year = int(dt.datetime.now().year)
     age = year - date
     instance.age = age
 
-pre_save.connect(receiver=set_slug, sender=Doctor)   
+pre_save.connect(receiver=set_slug, sender=Doctor) 
 pre_save.connect(receiver=set_age, sender=Doctor)
     
 class Patient(UserGeneral):

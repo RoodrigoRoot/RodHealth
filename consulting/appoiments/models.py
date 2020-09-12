@@ -13,7 +13,7 @@ class Appoiments(models.Model):
     
     
     def __str__(self):
-        return self.patient.user.username
+        return self.patient.user.last_name
     
     
     

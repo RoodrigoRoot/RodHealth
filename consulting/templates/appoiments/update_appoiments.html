@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Cita Médica
+{% endblock %}
+{% block content %}
+<form method="POST">
+    {{ form.errors }}
+  {{ form.non_field_errors }}
+    {% csrf_token %}
+    {{form.doctor|as_crispy_field}}
+    {{form.patient|as_crispy_field}}
+  
+    <label for="id_date">Hora y fecha*</label>
+    <div class="input-group date" id="picker_appoiment" data-target-input="nearest">
+        {{form.date}}
+        <div class="input-group-append" data-target="#picker_appoiment" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
+      {{form.telefono|as_crispy_field}}
+      {{form.category|as_crispy_field}}
+    <input type="submit" value="Actualizar">
+  </form>
+</div>
+{% endblock %}

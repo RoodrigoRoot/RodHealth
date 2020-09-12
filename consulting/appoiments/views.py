@@ -1,11 +1,7 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from .forms import AppoimentsForm
-from django.contrib import messages
 from .models import Appoiments
-from accounts.models import Patient
 # Create your views here.
 
 class AppoimentsCreateView(CreateView):
@@ -13,7 +9,14 @@ class AppoimentsCreateView(CreateView):
     form_class = AppoimentsForm
     success_url = reverse_lazy("index")
     template_name = "appoiments/appoiments.html"
-    
+
+
+class AppoimentsUpdateView(UpdateView):
+    model = Appoiments
+    form_class = AppoimentsForm
+    success_url = reverse_lazy("index")
+    template_name = "appoiments/update_appoiments.html"
+
 
 
     
