@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block title %}
 Pacientes
@@ -13,11 +12,68 @@ Pacientes
     </button>
   </div>
 {% endif %}
-<div class="container">
-    <form method="POST">{% csrf_token %}
-        {{second_form|crispy}}
-        {{form|crispy}}
-        <input type="submit" value="Agregar" class="btn btn-success">
-    </form>
+<div class="container py-2">
+
+
+<h3 class="card-title ">
+          <i class="far fa-list-alt"></i>
+          Lista de Pacientes
+      </h3>
+<div class="card card-default ">
+      
+     <div class="card-header">
+                 <a href="{% url 'users:create_patient' %}" class="btn btn-success btn-flat">
+          <i class="fas fa-plus"></i>
+          Agregar Paciente
+      </a></div>
+  <!-- /.card-header -->
+  <div class="card-body">
+  
+      <table class="table table-hover" id="data">
+          <thead>
+            <tr>
+                <th scope="col">Número</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Fecha de nacimiento</th>
+                <th scope="col">Opciones</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          {% for p in object_list %}
+         <a href="{% url 'users:list_patients' %}">
+            <tr id={{p.pk}}>
+           
+            <td scope="row">{{p.pk}}</td>
+            <td>{{p.user.first_name}}</td>
+            <td>{{p.user.last_name}}</td>
+            <td>{{p.date_birth}}</td>
+            <td><a href="{% url 'users:update_patient' p.pk%}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Editar Paciente"><i class="far fa-edit"></i></a>
+            
+            <a href="{% url 'users:del_patient' p.pk%}" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar Paciente"><i class="far fa-trash-alt"></i></a>
+            
+            <a href="{% url 'users:detail_patient' p.slug%}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Detalles de Paciente"><i class="fas fa-info-circle"></i>
+            </td>
+            </tr>
+          </a>
+            {% endfor %}
+          </tbody>
+      </table>
+  </div>
+  <!-- /.card-body -->
 </div>
+</div>
+<script>
+  var table = $("#data").DataTable({
+    responsive:true,
+    autoWidth:false,
+    
+  })
+
+
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 {% endblock %}

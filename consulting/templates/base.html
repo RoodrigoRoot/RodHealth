@@ -21,6 +21,10 @@
   <script src="{% static '/select2-4.1.0-beta.0/dist/js/select2.min.js'%}"></script>
   <!--Select2-->
 
+  <!--Datatable-->
+  
+  <!--Datatable-->
+
   <!-- Moment.js -->
   <script src="{% static '/moment-2.23.0/min/moment.min.js' %}"></script>
   <!-- Tempus Dominus Bootstrap 4 -->
@@ -29,8 +33,17 @@
 
 
   <!--Font Awesome-->
-  <link rel="stylesheet" href="{% static '/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
 
+<link rel="stylesheet" href="{% static '/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
+  <link rel="stylesheet"
+      href="{% static 'datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+  <script src="{% static 'datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
 
 
   {% block css %}{% endblock %}
@@ -50,16 +63,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'patients' %}">Pacientes</a>
+          <a class="nav-link" href="{% url 'users:list_patients' %}">Pacientes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'appoiments' %}">Citas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'account' user.id %}">Mi cuenta</a>
+          <a class="nav-link" href="{% url 'users:account' user.id %}">Mi cuenta</a>
         </li>
       </ul>
-      <a class="nav-link btn btn-outline-danger" href="{% url 'logout' %}">Salir</a>
+      <a class="nav-link btn btn-outline-danger" href="{% url 'users:logout' %}">Salir</a>
     </div>
   </nav>
 

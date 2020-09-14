@@ -13,13 +13,13 @@ class DoctorForm(forms.ModelForm):
     
     class Meta:
         model = Doctor
-        fields = ("curp", "cedula", "universidad", "date_birth", "tel_phone", "cel_phone", "sex", "age")
+        fields = ("curp", "cedula", "universidad", "date_birth", "tel_phone", "cel_phone", "sex", "age", "residence")
     
 
 class PatientForm(forms.ModelForm):
     
     class Meta:
         model = Patient
-        fields = ("curp", "date_birth", "tel_phone", "cel_phone", "sex", "age")
+        fields = ("curp", "date_birth", "tel_phone", "cel_phone", "sex", "age", "residence")
 
     

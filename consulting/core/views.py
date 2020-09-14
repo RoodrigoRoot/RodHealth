@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.views import View
 from .forms import LoginForm
 from django.contrib.auth import logout, authenticate, login
+
 # Create your views here.
 
 class IndexView(View):

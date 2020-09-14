@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views import View
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import CreateView
+from django.views.generic.detail import DetailView
 from .models import Doctor, Patient
-from django.contrib.auth.models import User
 from .forms import DoctorForm, UserForm, PatientForm
 from django.contrib.auth import logout, authenticate, login
 from django.urls import reverse_lazy
@@ -13,6 +13,7 @@ import uuid
 import datetime
 # Create your views here.
 
+#Doctor
 class DoctorUpdateView(UpdateView):   
     """This class is for update a Doctor"""
     model = Doctor
@@ -39,7 +40,48 @@ class DoctorUpdateView(UpdateView):
         return super().post(request, *args, **kwargs)
 
 
+def logout_view(request):
+    logout(request)
+    return redirect(reverse("index"))
 
+
+#Patients
+class PatientListView(ListView):
+   model = Patient
+   template_name="accounts/patients.html"
+
+
+
+class PatientUpdateView(UpdateView):
+    
+    model = Patient
+    form_class = PatientForm
+    template_name = "accounts/update_patients.html"
+    success_url = reverse_lazy('index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["second_form"] = UserForm
+        return context
+
+    @property
+    def pk(self):
+        return self.kwargs["pk"]
+    
+    def post(self, request, *args, **kwargs):
+        try:
+
+            self.object = self.get_object()        
+            patient = User.objects.filter(patient=self.pk).update(
+                last_name=request.POST.get("last_name"),
+                first_name=request.POST.get("first_name"),
+                email=request.POST.get("email"))
+        except Exception as e:
+            print(e)   
+        return super().post(request, *args, **kwargs)
+
+   
+   
 class PatientsCreateView(View):
     """PatientCreateView. This class Create patients.
     Has a two methdos. GET and POST.
@@ -50,7 +92,7 @@ class PatientsCreateView(View):
         """
         form = PatientForm()
         second_form = UserForm()
-        return render(request, 'accounts/patients.html', locals())
+        return render(request, 'accounts/create_patients.html', locals())
     
         
     def post(self, request, *args, **kwargs):        
@@ -79,34 +121,19 @@ class PatientsCreateView(View):
                 tel_phone=request.POST.get("tel_phone"),
                 cel_phone=request.POST.get("cel_phone"),
             )
-            alert = True
-        form = PatientForm()
-        second_form = UserForm()
+            return reverse("index", args=["success"])
+        else:
+            form = PatientForm()
+            second_form = UserForm()
         return render(request, 'accounts/patients.html', locals())
 
 
-class UpdatePatient(UpdateView):
-    
+class PatientDeleteView(DeleteView):
     model = Patient
-    form_class = PatientForm
-    template_name = "accounts/update_patients.html"
-    success_url = reverse_lazy('index')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["second_form"] = UserForm
-        return context
-    
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()        
-        user = User.objects.get(username=request.POST.get("username"))
-        user.first_name=request.POST.get("first_name")
-        user.last_name=request.POST.get("last_name")
-        user.email=request.POST.get("email")
-        user.save()
-        return super().post(request, *args, **kwargs)
+    template_name = "accounts/delete_patients.html"
+    success_url = reverse_lazy("index")
 
 
-def logout_view(request):
-    logout(request)
-    return redirect(reverse("index"))
+class PatientDetailView(DetailView):
+    model = Patient
+    template_name = "accounts/detail_patient.html"

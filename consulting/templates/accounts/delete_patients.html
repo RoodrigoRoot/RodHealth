@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title %}
+Eliminar Paciente
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+<form method="post">{% csrf_token %} 
+    <p>¿Está seguro de querer borrar al paciente "{{object.user.first_name}} {{object.user.last_name}}"?</p> 
+    
+    <input type="submit" value="Eliminar" class="btn btn-danger"> 
+</form> 
+
+</div>
+
+{% endblock %}
