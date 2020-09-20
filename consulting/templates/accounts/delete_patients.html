@@ -8,12 +8,14 @@ Eliminar Paciente
 {% block content %}
 
 <div class="container py-5">
-<form method="post">{% csrf_token %} 
-    <p>¿Está seguro de querer borrar al paciente "{{object.user.first_name}} {{object.user.last_name}}"?</p> 
+<form method="post" id="form_delete_patient">{% csrf_token %} 
+    <p>¿Está seguro de querer borrar definitivamente al paciente "{{object.user.first_name}} {{object.user.last_name}}"?</p> 
     
     <input type="submit" value="Eliminar" class="btn btn-danger"> 
+    <a href="{% url 'list_patients' %}" class="btn btn-success">Cancelar</a>
 </form> 
 
 </div>
 
 {% endblock %}
+

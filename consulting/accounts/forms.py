@@ -20,9 +20,16 @@ class DoctorForm(forms.ModelForm):
 
 class PatientForm(forms.ModelForm):
     user = forms.CharField(label="usuario", max_length=150, required=False, widget=forms.HiddenInput())
+    date_birth = forms.DateField(label="Fecha de nacimiento", required=True, widget=forms.DateInput(format='%m/%d/%Y', attrs={'class':'datepicker',
+            'autocomplete':'off',
+            'data-target': '#datetimepicker1',
+            'type':'date',
+    })
+    )
     class Meta:
         model = Patient
         fields = ("user", "curp", "date_birth", "tel_phone", "cel_phone", "sex", "age", "residence")
+        
 
     def clean_curp(self):
         data = self.cleaned_data["curp"]

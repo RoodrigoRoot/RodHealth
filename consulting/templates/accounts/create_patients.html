@@ -1,22 +1,19 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+   {% load bootstrap4 %}
+   {% bootstrap_css %}
+   {% bootstrap_javascript jquery='full' %}
 {% block title %}
 Crear Paciente
 {% endblock %}
 
 {%  block content %}
-  
+
   <div class="container">
     <form method="POST" id="form_create_patient">{% csrf_token %}
         {{second_form|crispy}}
-        {{form|crispy}}
-        <label for="id_date">Hora y fecha*</label>
-        <div class="input-group date" id="picker_appoiment" data-target-input="nearest">
-          {{form.date_birth}}
-          <div class="input-group-append" data-target="#picker_appoiment" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-          </div>
-        </div>
+        {% bootstrap_form form %}
+
         <input type="submit" value="Agregar" class="btn btn-success">
     </form>
 </div>
@@ -26,12 +23,7 @@ Crear Paciente
 		crossorigin="anonymous"></script>
 
 <script>
-    $(function () {
-    $("#datetimepicker1").datetimepicker({
-      format: 'DD/MM/YYYY HH:mm',
-    });
-  });
-
+$('.datepicker').datepicker({ format: "yyyy/mm/dd" });
 
   $("form").on("submit",function(e){
     e.preventDefault()

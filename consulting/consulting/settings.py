@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'core',
     'crispy_forms',
     'appoiments',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'consulting.urls'
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
 
 TEMPLATES = [
     {
