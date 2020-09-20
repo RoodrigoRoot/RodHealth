@@ -73,3 +73,8 @@ class Patient(UserGeneral):
 
 pre_save.connect(receiver=set_slug, sender=Patient)
 pre_save.connect(receiver=set_age, sender=Patient)  
+
+
+class TestUser(models.Model):
+    name = models.CharField(verbose_name=("Nombre"), max_length=50)
+    last_name = models.CharField(verbose_name=("Apellido"), max_length=50)

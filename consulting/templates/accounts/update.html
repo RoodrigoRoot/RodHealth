@@ -9,16 +9,16 @@ Mi cuenta
 <form method="post">{% csrf_token %} 
     <div class="form-group">
         <label for="first_name">Nombre*</label>
-    <input type="text" class="form-control" value="{{user.first_name}}" id="first_name" name="first_name"> 
+    <input type="text" class="form-control" value="{{doctor.user.first_name}}" id="first_name" name="first_name"> 
     </div>
     <div class="form-group">
         <label for="last_name">Apellidos*</label>
-    <input type="text" class="form-control" value="{{user.last_name}}" id="last_name" name="last_name"> 
+    <input type="text" class="form-control" value="{{doctor.user.last_name}}" id="last_name" name="last_name"> 
     </div>
 
     <div class="form-group">
         <label for="email">Email*</label>
-    <input type="text" class="form-control" value="{{user.email}}" id="email" name="email"> 
+    <input type="text" class="form-control" value="{{doctor.user.email}}" id="email" name="email"> 
     </div>
     {{ form|crispy }}
     <div class="form-group">

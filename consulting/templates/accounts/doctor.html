@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Mi cuenta
+{% endblock %}
+{% block content %}
+    <a href="{% url 'users:account_update' object.pk %}">Modificar mis datos<a/>
+{{object}}
+{% endblock %}

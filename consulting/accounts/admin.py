@@ -11,7 +11,8 @@ class DoctorAdmin(admin.ModelAdmin):
 class PatientAdmin(admin.ModelAdmin):
     list_display = ("pk","user", "curp", "tel_phone")
     search_fields = ("user", "curp")
-    
 
-
+@admin.register(TestUser)
+class TestUserAdmin(admin.ModelAdmin):
+    list_display = ("name", "last_name") 
 

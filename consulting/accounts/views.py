@@ -4,16 +4,24 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import CreateView
 from django.views.generic.detail import DetailView
-from .models import Doctor, Patient
-from .forms import DoctorForm, UserForm, PatientForm
+from .models import Doctor, Patient, TestUser
+from .forms import DoctorForm, UserForm, PatientForm, TestUserForm
 from django.contrib.auth import logout, authenticate, login
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 import uuid
 import datetime
+from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import model_to_dict
 # Create your views here.
 
 #Doctor
+
+class DoctorDetailView(DetailView):
+    model = Doctor
+    template_name = "accounts/doctor.html"
+
 class DoctorUpdateView(UpdateView):   
     """This class is for update a Doctor"""
     model = Doctor
@@ -25,6 +33,7 @@ class DoctorUpdateView(UpdateView):
         """Set the form to update data from User model of Django"""
         context = super().get_context_data(**kwargs)
         context["second_form"] = UserForm
+        print(context)
         return context
     
     def post(self, request, *args, **kwargs):
@@ -33,9 +42,10 @@ class DoctorUpdateView(UpdateView):
         to update default the model User .
         """
         self.object = self.get_object()        
-        user = User.objects.get(username=request.POST.get("username"))
-        user.first_name =request.POST.get("first_name")
-        user.last_name =request.POST.get("last_name")
+        print(request.user.id)
+        user = User.objects.get(id=request.user.id)
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
         user.save()
         return super().post(request, *args, **kwargs)
 
@@ -57,7 +67,7 @@ class PatientUpdateView(UpdateView):
     model = Patient
     form_class = PatientForm
     template_name = "accounts/update_patients.html"
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('list_patients')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,66 +84,109 @@ class PatientUpdateView(UpdateView):
             self.object = self.get_object()        
             patient = User.objects.filter(patient=self.pk).update(
                 last_name=request.POST.get("last_name"),
-                first_name=request.POST.get("first_name"),
-                email=request.POST.get("email"))
+                first_name=request.POST.get("first_name"))
         except Exception as e:
             print(e)   
         return super().post(request, *args, **kwargs)
 
    
    
-class PatientsCreateView(View):
+class PatientsCreateView(CreateView):
     """PatientCreateView. This class Create patients.
     Has a two methdos. GET and POST.
     """
-    def get(self, request, *args, **kwargs):
-        """This methos set two forms, the first form is to data from Patient.
-        The second form is to data from User model to user of Patient
-        """
-        form = PatientForm()
-        second_form = UserForm()
-        return render(request, 'accounts/create_patients.html', locals())
-    
-        
-    def post(self, request, *args, **kwargs):        
-        patient_form = PatientForm(request.POST)
-        if patient_form.is_valid():
-            email = request.POST.get("email")
-            first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
-            uid = str(uuid.uuid4())[:4]
-            username = "{}-{}-{}".format(first_name, last_name, uid)
-            user = User.objects.create(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password="password"
-            )
-            date_birth=request.POST.get("date_birth")
-            date_birth = datetime.datetime.strptime(date_birth, '%Y-%m-%d')
-            Patient.objects.create(
-                user=user,
-                curp=request.POST.get("curp"),
-                sex=request.POST.get("sex"),
-                age=request.POST.get("age"),
-                date_birth=date_birth,
-                tel_phone=request.POST.get("tel_phone"),
-                cel_phone=request.POST.get("cel_phone"),
-            )
-            return reverse("index", args=["success"])
-        else:
-            form = PatientForm()
-            second_form = UserForm()
-        return render(request, 'accounts/patients.html', locals())
+    model = Patient
+    template_name = 'accounts/create_patients.html'
+    form_class = PatientForm
+    success_url = reverse_lazy("users:list_patients")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["second_form"] = UserForm()
+        return context   
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        user = None
+        try:        
+            user_form = UserForm(request.POST)
+            patient_form = PatientForm(request.POST)
+            if user_form.is_valid():
+                first_name = request.POST.get("first_name")
+                last_name = request.POST.get("last_name").split()[0]
+                uid = str(uuid.uuid4())[:4]
+                username = "{}-{}-{}".format(first_name, last_name, uid)
+                user = user_form.save(commit=False)
+                user.username = username
+                user.save()
+                user_form.save()
+                if patient_form.is_valid():
+                    patient = patient_form.save(commit=False)
+                    patient.user=user
+                    patient.save()
+                    #print(patient_form.errors)
+                    data = model_to_dict(patient_form.save())
+                else:
+                    print(patient_form.errors.get_json_data)
+                    data['errors'] = patient_form.errors
+        except Exception as e:
+            print(e)
+            data['errors'] = str(e)
+        return JsonResponse(data)
 
 
 class PatientDeleteView(DeleteView):
     model = Patient
     template_name = "accounts/delete_patients.html"
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("list_patients")
 
 
 class PatientDetailView(DetailView):
     model = Patient
     template_name = "accounts/detail_patient.html"
+
+
+class TestUserFormView(CreateView):
+    model = TestUser
+    template_name = 'accounts/test.html'
+    form_class = TestUserForm
+    success_url = reverse_lazy("list_patients")
+
+    def get_form_kwargs(self):
+        kwargs = super(TestUserFormView, self).get_form_kwargs()
+        kwargs['pk'] = self.request.GET['pk']
+        return kwargs
+
+    #def get(self, request, *args, **kwargs):
+        #form = TestUserForm()
+    #    return render(request, 'accounts/test.html', locals())
+
+    def post(self, request, *args, **kwargs):
+        try:
+            print(request.POST)
+        except Exception as e:
+            print(e)
+
+class TestUserFormUpdateView(UpdateView):
+    model = TestUser
+    template_name = 'accounts/test.html'
+    form_class = TestUserForm
+    success_url = "/"
+
+    #def get(self, request, *args, **kwargs):
+        #form = TestUserForm()
+    #    return render(request, 'accounts/test.html', locals())
+
+    def post(self, request, *args, **kwargs):
+        try:
+            print(request.POST)
+        except Exception as e:
+            print(e)
+
+
+class TestUserBase(CreateView):
+    
+    model = User
+    form_class = UserCreationForm 
+    template_name= "accounts/test.html"
+    success_url = reverse_lazy("list_patients")

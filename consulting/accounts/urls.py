@@ -1,11 +1,12 @@
 from django.urls import path
 from .views import *
 
-app_name="users"
+
 
 urlpatterns = [
     #Doctor
-    path("cuenta/<int:pk>/", DoctorUpdateView.as_view(), name="account"),
+    path("cuenta/<slug:slug>/", DoctorDetailView.as_view(), name="account"),
+    path("cuenta/<int:pk>/edit", DoctorUpdateView.as_view(), name="account_update"),
 
     #Patient
     path("paciente/list/", PatientListView.as_view(), name="list_patients"),
@@ -14,6 +15,10 @@ urlpatterns = [
     path("paciente/<int:pk>/del/", PatientDeleteView.as_view(), name="del_patient"),
     path("paciente/<slug:slug>/detail/", PatientDetailView.as_view(), name="detail_patient"),
     
+    path("test/", TestUserFormView.as_view(), name="tester"),
+    path("test/<int:pk>/", TestUserFormUpdateView.as_view(), name="testerupdate"),
+    path("user/", TestUserBase.as_view(), name="useradd"),
+
     #IN-OUT
     path("salir/", logout_view, name="logout"),
 ]
