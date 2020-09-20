@@ -1,0 +1,59 @@
+{% load static %}
+<!-- Navbar -->
+
+<nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+    <div class="container">
+        <a href="{% url 'index' %}" class="navbar-brand">
+            <img src="{% static 'img/logos/logo_b.png' %}" alt="RodHealth Logo"
+                 class="brand-image"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">RodHealth</span>
+        </a>
+        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'index' %}" class="nav-link"><i class="fas fa-home"></i> Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'list_patients' %}" class="nav-link"><i class="fas fa-user-injured"></i> Pacientes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'appoiments' %}" class="nav-link"><i class="far fa-calendar-check"></i>Citas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'index' %}" class="nav-link"><i class="far fa-file"></i>Expedientes</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="far fa-user-circle fa-2x"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">Doctor</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'account' user.doctor.slug %}" class="dropdown-item">
+                        <i class="fas fa-user mr-2"></i> Mi cuenta
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-key mr-2"></i> Cambiar Contraseña                        
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'logout' %}" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    $('.dropdown-toggle').dropdown()
+</script>

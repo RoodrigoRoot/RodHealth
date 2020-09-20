@@ -10,6 +10,13 @@ Crear Paciente
     <form method="POST" id="form_create_patient">{% csrf_token %}
         {{second_form|crispy}}
         {{form|crispy}}
+        <label for="id_date">Hora y fecha*</label>
+        <div class="input-group date" id="picker_appoiment" data-target-input="nearest">
+          {{form.date_birth}}
+          <div class="input-group-append" data-target="#picker_appoiment" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          </div>
+        </div>
         <input type="submit" value="Agregar" class="btn btn-success">
     </form>
 </div>
@@ -19,25 +26,12 @@ Crear Paciente
 		crossorigin="anonymous"></script>
 
 <script>
-  function message_error(obj){
-    var html = '';
-    if(typeof(obj)==='object'){
-    var html = '<ul style="text-align: left;">'
-    $.each(obj, function(key,value){
-        html+='<li>'+ key+': '+  value+'</li>'
-    })
-    html+='</ul>';
-    }
-    else{
-        html = '<p>'+obj+'</p>';
-    }
-    Swal.fire({
-        title: 'Error!',
-        html:html,
-        icon: 'error',
-        confirmButtonText: 'Aceptar'
-      });
-      }
+    $(function () {
+    $("#datetimepicker1").datetimepicker({
+      format: 'DD/MM/YYYY HH:mm',
+    });
+  });
+
 
   $("form").on("submit",function(e){
     e.preventDefault()

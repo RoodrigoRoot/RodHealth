@@ -4,6 +4,10 @@
 {% block title %}
 Cita Médica
 {% endblock %}
+
+{% block css%}
+<script src="{% static '/select2-4.1.0-beta.0/dist/js/select2.min.js'%}"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
 
@@ -79,5 +83,10 @@ Cita Médica
       format: 'DD/MM/YYYY HH:mm',
     });
   });
+
+    $(document).ready(function () {
+    $('.select-patient').select2();
+  });
+
 </script>
 {% endblock %}

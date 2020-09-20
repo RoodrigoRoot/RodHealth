@@ -74,20 +74,26 @@ class PatientUpdateView(UpdateView):
         context["second_form"] = UserForm
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
     @property
     def pk(self):
         return self.kwargs["pk"]
     
     def post(self, request, *args, **kwargs):
+        data = {}
         try:
-
-            self.object = self.get_object()        
-            patient = User.objects.filter(patient=self.pk).update(
+            User.objects.filter(patient=int(self.pk)).update(
                 last_name=request.POST.get("last_name"),
                 first_name=request.POST.get("first_name"))
+            form = self.get_form()
+            data = model_to_dict(form.save())
         except Exception as e:
-            print(e)   
-        return super().post(request, *args, **kwargs)
+            data['errors'] = str(e)
+        return JsonResponse(data)        
+
 
    
    
@@ -157,9 +163,6 @@ class TestUserFormView(CreateView):
         kwargs['pk'] = self.request.GET['pk']
         return kwargs
 
-    #def get(self, request, *args, **kwargs):
-        #form = TestUserForm()
-    #    return render(request, 'accounts/test.html', locals())
 
     def post(self, request, *args, **kwargs):
         try:
