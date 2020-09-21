@@ -14,10 +14,6 @@ urlpatterns = [
     path("paciente/<int:pk>/edit/", PatientUpdateView.as_view(), name="update_patient"),
     path("paciente/<int:pk>/del/", PatientDeleteView.as_view(), name="del_patient"),
     path("paciente/<slug:slug>/detail/", PatientDetailView.as_view(), name="detail_patient"),
-    
-    path("test/", TestUserFormView.as_view(), name="tester"),
-    path("test/<int:pk>/", TestUserFormUpdateView.as_view(), name="testerupdate"),
-    path("user/", TestUserBase.as_view(), name="useradd"),
 
     #IN-OUT
     path("salir/", logout_view, name="logout"),
