@@ -32,7 +32,6 @@ class DoctorUpdateView(UpdateView):
         """Set the form to update data from User model of Django"""
         context = super().get_context_data(**kwargs)
         context["second_form"] = UserForm
-        print(context)
         return context
     
     def post(self, request, *args, **kwargs):
@@ -41,7 +40,6 @@ class DoctorUpdateView(UpdateView):
         to update default the model User .
         """
         self.object = self.get_object()        
-        print(request.user.id)
         user = User.objects.get(id=request.user.id)
         user.first_name = request.POST.get("first_name")
         user.last_name = request.POST.get("last_name")
@@ -84,8 +82,10 @@ class PatientUpdateView(UpdateView):
                 last_name=request.POST.get("last_name"),
                 first_name=request.POST.get("first_name"))
             form = self.get_form()
-            data = model_to_dict(form.save())
+            if form.is_valid():
+                data = model_to_dict(form.save())
         except Exception as e:
+            print(e)
             data['errors'] = str(e)
         return JsonResponse(data)        
 
@@ -132,6 +132,7 @@ class PatientsCreateView(CreateView):
         except Exception as e:
             print(e)
             data['errors'] = str(e)
+        print(data)
         return JsonResponse(data)
 
 
